@@ -1,0 +1,88 @@
+Para trabalhar com upload de imagens necessitamos de algumas configurações adicionais.
+
+A primeira delas e ir dentro do diretorio config -> filesystems.php
+
+La vamos informar ao framework como vamos trabalhar, para exemplos locais eu estou utilizando a configuração public, todas as imagens do sistema estao disponiveis.
+
+Outra configuração importante e criar um link simbolico que sera usado para o framework reconhecer as imagens e assim teremos acesso para poder exibir nas views
+o comando para criar o link simbolico e
+
+php artisan storage:link
+
+o link simbolico ficara dentro do diretorio storage -> app -> public
+
+
+=================== CORS ===================
+
+Comando para instalação CORS
+
+"composer require spatie/laravel-cors"
+
+
+Adicionar globalmente
+
+// app/Http/Kernel.php
+
+protected $middleware = [
+    ...
+    \Spatie\Cors\Cors::class
+];
+
+comando para criação do arquivo de configuração
+
+php artisan vendor:publish --provider="Spatie\Cors\CorsServiceProvider" --tag="config"
+
+
+=================== JWT-AUTH ===================
+
+JSON Web Token Authentication for Laravel & Lumen
+
+Instalação:
+
+rodar o comando "composer require tymon/jwt-auth:dev-develop --prefer-source"
+
+Cadastrar os providers
+
+config -> app.php
+
+'providers' => [
+    ...
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+]
+
+e seu alias
+
+'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+
+
+gerar o arquivo de configuração
+
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+
+
+
+para logarmos utilizando o token gerado pelo JWT necessitamos passar no header a seguinte informação
+
+Authorization -> Bearer "token"
+
+
+
+
+
+
+
+
+
+=====================================================================================================
+CONFIGURAÇÕES VUE
+
+
+VUE SNOTIFY
+
+Importar dentro do sass no arquivo app.scss
+
+
+sempre que criamos alguma coisa utilizando o Vuex devemos vincular isso no arquivo principal
+
+
+Quando utilizamos os mutations necessitamos criar uma propriedade computada para pegar o resultado usando vuex
