@@ -32,7 +32,14 @@ export default {
                 .then(response => {
                     context.commit('AUTH_USER_OK', response.data.user);
 
-                    localStorage.setItem(NAME_TOKEN, response.data.token); // armazenar o token
+
+                    const token = response.data.token;
+                    localStorage.setItem(NAME_TOKEN, token); // armazenar o token
+                    /*
+                    * Resolver bug que quando o usuario loga no sistema nao lista os produtos
+                    * So mostrava quando o usuario atualizava a pagina
+                     */
+                    window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 })
                 .catch(error => console.log(error))
                 .finally(() => context.commit('PRELOADER', false))
@@ -58,7 +65,7 @@ export default {
         },
 
         logout(context) {
-            localStorage.removeItem(NAME_TOKEN)
+            localStorage.removeItem(NAME_TOKEN);
 
             context.commit('AUTH_USER_LOGOUT')
         }

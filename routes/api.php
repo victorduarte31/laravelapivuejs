@@ -10,7 +10,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([
     'prefix'        => 'v1', // prefixo
     'namespace'     => 'Api\v1', // diretorio onde se encontra os controllers
-   /* 'middleware'    => 'auth:api' // 'auth:api' responsavel pela autenticação*/
+    'middleware'    => 'auth:api' // 'auth:api' responsavel pela autenticação
 ], function () {
     Route::get('categories/{id}/products', 'CategoryController@products');
     Route::apiResource('categories', 'CategoryController');

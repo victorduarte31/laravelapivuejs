@@ -15,6 +15,11 @@ class CategoryController extends Controller
     public function __construct(Category $category)
     {
         $this->category = $category;
+
+        /*
+         * Definindo quais metodos estaram liberados para serem acessados sem o usuario estar logado
+         */
+        $this->middleware('auth:api')->except(['index']);
     }
 
     /**

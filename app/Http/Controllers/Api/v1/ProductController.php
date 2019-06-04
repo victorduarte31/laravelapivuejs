@@ -18,6 +18,11 @@ class ProductController extends Controller
     public function __construct(Product $product)
     {
         $this->product = $product;
+
+        /*
+         * Definindo quais metodos estaram liberados para serem acessados sem o usuario estar logado
+         */
+        $this->middleware('auth:api')->except(['index', 'show']);
     }
 
     /**
@@ -36,7 +41,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUpdateProductFormRequest $request)
@@ -64,7 +69,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -78,8 +83,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(StoreUpdateProductFormRequest $request, $id)
@@ -119,7 +124,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

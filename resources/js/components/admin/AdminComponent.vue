@@ -12,6 +12,11 @@
                 <li>
                     <router-link class="nav-link" :to="{name: 'admin.products'}">Produtos</router-link>
                 </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        {{me.name}} - (<a @click.prevent="logout" href="#">Sair</a>)
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="container">
@@ -26,6 +31,18 @@
         computed: {
             totalCategories() {
                 return this.$store.state.categories.items.data.length
+            },
+
+            me() {
+                return this.$store.state.auth.me
+            }
+        },
+
+        methods: {
+            logout() {
+                this.$store.dispatch('logout');
+
+                this.$router.push({name: 'auth'})
             }
         }
     }
