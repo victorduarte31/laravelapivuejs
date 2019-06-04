@@ -21,3 +21,8 @@ export default new Vue({
 });
 
 store.dispatch('loadCategories');
+
+// verificando se existe usuario logado
+store.dispatch('checkLogin')
+    .then(() => router.push({name: 'admin.dashboard'}));
+

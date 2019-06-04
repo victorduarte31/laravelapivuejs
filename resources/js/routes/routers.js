@@ -26,13 +26,14 @@ const routes = [
             {path: '', component: HomeComponent, name: 'home'},
             {path: 'contato', component: ContactComponent, name: 'contact'},
             {path: 'carrinho', component: CartComponent, name: 'cart'},
-            {path: 'login', component: LoginComponent, name: 'auth'},
+            {path: 'login', component: LoginComponent, name: 'auth', meta: {auth: false}},
         ]
     },
     {
         path: '/admin',
         component: AdminComponent,
         name: 'admin',
+        meta: {auth: true},
         children: [ // Todas as rotas que pertencem ao setor de admin serão listadas
             // rotas de categorias
             {path: '', component: DashboardComponent, name: 'admin.dashboard'},
@@ -41,7 +42,7 @@ const routes = [
             {path: 'categories/:id/edit', component: EditCategoryComponent, name: 'admin.categories.edit', props: true},
 
             // rotas de produtos
-            {path: 'products', component: ProductsComponent, name: 'admin.products', meta: {auth: true}} // adicionado o parametro meta que recebe um objeto na qual vamos utilizar para fazer a validação onde so pessoas autenticadas podem acessar o link de produtos
+            {path: 'products', component: ProductsComponent, name: 'admin.products'} // adicionado o parametro meta que recebe um objeto na qual vamos utilizar para fazer a validação onde so pessoas autenticadas podem acessar o link de produtos
         ]
     },
 ];
@@ -52,8 +53,22 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.auth && !store.state.auth.authenticated) {
+        store.commit('CHANGE_URL_BACK', to.name);
+
+
         return router.push({name: 'login'})
     }
+
+    if (to.matched.some(record => record.meta.auth) && !store.state.auth.authenticated) {
+        store.commit('CHANGE_URL_BACK', to.name);
+
+        return router.push({name: 'login'})
+    }
+
+    if (to.meta.hasOwnProperty('auth') && !to.meta.auth && store.state.auth.authenticated) {
+        return router.push({name: 'admin.dashboard'})
+    }
+
 
     next()
 
