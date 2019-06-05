@@ -43,6 +43,9 @@
                     .then(()=> {
                         this.$router.push({name: 'admin.dashboard'})
                     })
+                    .catch(() => {
+                        this.$snotify.error('Dados invalidos', 'Falha ao acessar')
+                    })
             }
         }
     }

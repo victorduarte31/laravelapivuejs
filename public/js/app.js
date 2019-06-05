@@ -1786,10 +1786,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     totalCategories: function totalCategories() {
       return this.$store.state.categories.items.data.length;
+    },
+    me: function me() {
+      return this.$store.state.auth.me;
+    }
+  },
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('logout');
+      this.$router.push({
+        name: 'auth'
+      });
     }
   }
 });
@@ -2892,6 +2908,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.$router.push({
           name: 'admin.dashboard'
         });
+      })["catch"](function () {
+        _this.$snotify.error('Dados invalidos', 'Falha ao acessar');
       });
     }
   }
@@ -22212,7 +22230,27 @@ var render = function() {
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+            _vm._v("\n                    " + _vm._s(_vm.me.name) + " - ("),
+            _c(
+              "a",
+              {
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.logout($event)
+                  }
+                }
+              },
+              [_vm._v("Sair")]
+            ),
+            _vm._v(")\n                ")
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -43142,7 +43180,7 @@ router.beforeEach(function (to, from, next) {
   if (to.meta.auth && !_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.authenticated) {
     _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].commit('CHANGE_URL_BACK', to.name);
     return router.push({
-      name: 'login'
+      name: 'auth'
     });
   }
 
@@ -43151,7 +43189,7 @@ router.beforeEach(function (to, from, next) {
   }) && !_vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].state.auth.authenticated) {
     _vuex_store__WEBPACK_IMPORTED_MODULE_2__["default"].commit('CHANGE_URL_BACK', to.name);
     return router.push({
-      name: 'login'
+      name: 'auth'
     });
   }
 
@@ -43206,9 +43244,15 @@ __webpack_require__.r(__webpack_exports__);
       context.commit('PRELOADER', true);
       return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/auth', params).then(function (response) {
         context.commit('AUTH_USER_OK', response.data.user);
-        localStorage.setItem(_config_configs__WEBPACK_IMPORTED_MODULE_1__["NAME_TOKEN"], response.data.token); // armazenar o token
-      })["catch"](function (error) {
-        return console.log(error);
+        var token = response.data.token;
+        localStorage.setItem(_config_configs__WEBPACK_IMPORTED_MODULE_1__["NAME_TOKEN"], token); // armazenar o token
+
+        /*
+        * Resolver bug que quando o usuario loga no sistema nao lista os produtos
+        * So mostrava quando o usuario atualizava a pagina
+         */
+
+        window.axios.defaults.headers.common['Authorization'] = "Bearer ".concat(token);
       })["finally"](function () {
         return context.commit('PRELOADER', false);
       });

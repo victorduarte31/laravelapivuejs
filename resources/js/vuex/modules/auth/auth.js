@@ -18,7 +18,7 @@ export default {
             state.urlBack = url;
         },
 
-        AUTH_USER_LOGOUT (state) {
+        AUTH_USER_LOGOUT(state) {
             state.me = {};
             state.authenticated = false;
             state.urlBack = 'home';
@@ -40,9 +40,7 @@ export default {
                     * So mostrava quando o usuario atualizava a pagina
                      */
                     window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                })
-                .catch(error => console.log(error))
-                .finally(() => context.commit('PRELOADER', false))
+                }).finally(() => context.commit('PRELOADER', false))
 
         },
 

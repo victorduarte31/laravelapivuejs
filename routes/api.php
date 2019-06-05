@@ -24,3 +24,5 @@ Route::post('auth', 'Auth\AuthApiController@authenticate'); // gerar token para 
 Route::post('auth-refresh', 'Auth\AuthApiController@refresh'); // atualizar token expirado
 Route::get('me', 'Auth\AuthApiController@getAuthenticatedUser'); // devolver usuario logado atravez do token
 
+// Cadastrar novo usuario
+Route::post('register', 'Auth\AuthApiController@register');

@@ -8,20 +8,20 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-
+use App\User;
 
 class AuthApiController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['authenticate']]);
+        $this->middleware('auth:api', ['except' => ['authenticate', 'register']]);
     }
 
-    public function authenticate(Request $request)
+    public function authenticate()
     {
         // grab credentials from the request
-        $credentials = $request->only('email', 'password');
+        $credentials = request()->only('email', 'password');
 
         try {
             // attempt to verify the credentials and create a token for the user
@@ -77,5 +77,14 @@ class AuthApiController extends Controller
             response()->json(['token_invalid'], $e->getStatusCode());
         }
         return response()->json(compact('token'));
+    }
+
+    public function register(Request $request, User $user)
+    {
+        $data = $request->all();
+        $data['password'] = bcrypt($data['password']);
+        $user->create($data);
+
+        return $this->authenticate();
     }
 }
