@@ -18,6 +18,8 @@
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Acessar</button>
+
+                                <router-link :to="{name: 'register'}">Não tem cadastro? Registre-se</router-link>
                             </div>
                         </form>
                     </div>

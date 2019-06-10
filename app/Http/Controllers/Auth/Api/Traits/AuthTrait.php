@@ -1,22 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Api\Traits;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use App\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthApiController extends Controller
+trait AuthTrait
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['authenticate', 'register']]);
-    }
 
     public function authenticate()
     {
@@ -38,53 +30,6 @@ class AuthApiController extends Controller
 
         // all good so return the token
         return response()->json(compact('token', 'user'));
-    }
-
-    public function getAuthenticatedUser()
-    {
-        $response = $this->getUser();
-        if ($response['status'] != 200)
-            return response()->json([$response['response']], $response['status']);
-
-        $user = $response['response'];
-
-        // the token is valid and we have found the user via the sub claim
-        return response()->json(compact('user'));
-    }
-
-    public function refresh()
-    {
-        if (!$token = JWTAuth::getToken())
-            return response()->json(['error' => 'token_not_send'], 401);
-
-        try {
-            $token = JWTAuth::refresh();
-        } catch (TokenInvalidException $e) {
-            response()->json(['token_invalid'], $e->getStatusCode());
-        }
-        return response()->json(compact('token'));
-    }
-
-    public function register(StoreUpdateUserFormRequest $request, User $user)
-    {
-        $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
-        $user->create($data);
-
-        return $this->authenticate();
-    }
-
-    public function update(StoreUpdateUserFormRequest $request)
-    {
-        $response = $this->getUser();
-        if ($response['status'] != 200)
-            return response()->json([$response['response']], $response['status']);
-
-        $user = $response['response'];
-
-        $user->update($request->all());
-
-        return response()->json(compact('user'));
     }
 
     public function getUser()

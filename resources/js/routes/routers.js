@@ -14,6 +14,7 @@ import ContactComponent from "../components/frontend/pages/contact/ContactCompon
 import ProductDetail from "../components/frontend/pages/product/ProductDetail";
 import CartComponent from "../components/frontend/pages/cart/CartComponent";
 import LoginComponent from "../components/frontend/pages/login/LoginComponent";
+import Register from "../components/frontend/pages/user/Register";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,7 @@ const routes = [
             {path: 'contato', component: ContactComponent, name: 'contact'},
             {path: 'carrinho', component: CartComponent, name: 'cart'},
             {path: 'login', component: LoginComponent, name: 'auth', meta: {auth: false}},
+            {path: 'cadastrar', component: Register, name: 'register', meta: {auth: false}},
         ]
     },
     {

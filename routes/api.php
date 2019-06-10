@@ -17,15 +17,21 @@ Route::group([
     Route::apiResource('products', 'ProductController');
 });
 
-/**
- * ROTAS DE AUTENTICAÇÃO
- */
-Route::post('auth', 'Auth\AuthApiController@authenticate'); // gerar token para autenticar
-Route::post('auth-refresh', 'Auth\AuthApiController@refresh'); // atualizar token expirado
-Route::get('me', 'Auth\AuthApiController@getAuthenticatedUser'); // devolver usuario logado atravez do token
+
+Route::group([
+    'namespace' => 'Auth\api', // diretorio onde se encontra os controllers
+], function () {
+    /**
+     * ROTAS DE AUTENTICAÇÃO
+     */
+    Route::post('auth', 'AuthApiController@authenticate'); // gerar token para autenticar
+    Route::post('auth-refresh', 'AuthApiController@refresh'); // atualizar token expirado
+    Route::get('me', 'AuthApiController@getAuthenticatedUser'); // devolver usuario logado atravez do token
 
 // Cadastrar novo usuario
-Route::post('register', 'Auth\AuthApiController@register');
+    Route::post('register', 'ProfileApiController@register');
 
 // Editar usuario
-Route::put('update', 'Auth\AuthApiController@update');
+    Route::put('update', 'ProfileApiController@update');
+
+});
