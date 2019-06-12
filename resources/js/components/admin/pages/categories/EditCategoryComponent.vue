@@ -11,6 +11,7 @@
 
 <script>
     import FormCategoryComponent from "./add-edit-form/FormCategoryComponent";
+    import admin from "../../../../vuex/store";
 
     export default { // Para editar uma categoria e obrigatorio o id do item, por isso adicionado os props
         props: {
@@ -34,7 +35,7 @@
                 this.$store.dispatch('loadCategory', this.id) // passamos sempre a actions
                     .then(response => this.category = response)
                     .catch(error => {
-                        this.$snotify.error('Categoria não encontrada', '404')
+                        this.$snotify.error('Categoria não encontrada', '404');
                         this.$router.push({name: admin.categories})
                     })
             }

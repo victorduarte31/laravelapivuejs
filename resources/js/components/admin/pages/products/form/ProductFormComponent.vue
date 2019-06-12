@@ -90,6 +90,8 @@
                 formData.append('description', this.product.description);
                 formData.append('category_id', this.product.category_id);
 
+                console.log(formData);
+
                 this.$store.dispatch(action, formData)
                     .then(() => {
                         this.$snotify.success('Ação executada com sucesso');
